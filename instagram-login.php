@@ -66,7 +66,6 @@ function instagram_login_button_shortcode( $atts, $content ){
 
 	//(isset($atts['redirect'])) ? $atts['redirect'] :
 
-
 	$redirect = ( is_ssl() ? 'https://' : 'http://' ) . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] ;
 	$redirect_page =  (isset($atts['redirect'])) ? $atts['redirect'] : $redirect;
 
@@ -76,7 +75,7 @@ function instagram_login_button_shortcode( $atts, $content ){
 
 	ob_start();
 
-	echo '<a id="ilogin_link" class="'. $class.'" href="https://api.instagram.com/oauth/authorize/?client_id='.esc_attr(get_option('ilogin_api_key', 'update your client id')).'&redirect_uri='.esc_attr($redirect).'&response_type=token">'.$buttonText.'</a>';
+	echo '<a id="ilogin_link" style="cursor: pointer;" class="'. $class.'" data-url="https://api.instagram.com/oauth/authorize/?client_id='.esc_attr(get_option('ilogin_api_key', 'update your client id')).'&redirect_uri='.esc_attr($redirect).'&response_type=token">'.$buttonText.'</a>';
 
 	echo '<input type="email" id="ilogin_user_email" placeholder="Your email" style="display: none;" type="text" name="ilogin_user_email">';
 	echo '<div id="ilogin_error_email"> </div>';

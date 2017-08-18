@@ -1,5 +1,3 @@
-
-
 //when click on ilogin_link open child window
 //open child page
 //on parent page 
@@ -26,7 +24,7 @@ if(token){
 		}
 	});
 }else{
-	console.log('UNDEFINED');
+	console.log('UNDEFINED TOKEN INSTAGRAM');
 }
 
 function postUser(user_id, username, token){
@@ -87,7 +85,8 @@ jQuery("#ilogin_submit").click(function(){
 					console.log(response.data.user.errors);
 				}else{
 			 		console.log(response);
-			 		window.location = jQuery("#ilogin_redirect_url").val();
+			 		window.opener.location = jQuery("#ilogin_redirect_url").val();
+			 		// window.close();
 				}
 			},
 			error: function(response){
@@ -98,8 +97,6 @@ jQuery("#ilogin_submit").click(function(){
 		jQuery("#ilogin_error_email").html('<ul><li>Please enter a valid email address</li></ul>');
 	}
 });
-
-
 
 function getUserPics(userid, token){
 	jQuery.ajax({
@@ -121,4 +118,23 @@ function getUserPics(userid, token){
 		}
 	});
 }
+
+jQuery("#ilogin_link").click(function(){
+
+	var url = jQuery(this).data('url');
+	var windowName = "instagramLogin";
+
+	var dualScreenLeft = window.screenLeft != undefined ? window.screenLeft : screen.left;
+    var dualScreenTop = window.screenTop != undefined ? window.screenTop : screen.top;
+
+    var width = window.innerWidth ? window.innerWidth : document.documentElement.clientWidth ? document.documentElement.clientWidth : screen.width;
+    var height = window.innerHeight ? window.innerHeight : document.documentElement.clientHeight ? document.documentElement.clientHeight : screen.height;
+
+    var left = ((width / 2) - (500 / 2)) + dualScreenLeft;
+    var top = ((height / 2) - (400 / 2)) + dualScreenTop;
+
+    var newWindow = window.open(url, windowName, 'scrollbars=yes, width=500, height=400, top=' + top + ', left=' + left);
+
+});
+
 
