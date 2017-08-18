@@ -1,9 +1,3 @@
-
-
-//when click on ilogin_link open child window
-//open child page
-//on parent page 
-
 function getHashValue(key) {
   var matches = location.hash.match(new RegExp(key+'=([^&]*)'));
   return matches ? matches[1] : null;
@@ -18,7 +12,6 @@ if(token){
 		type: 'GET',
 		data: {access_token: token},
 		success: function(user){
-			console.log(wordpress.instagram_token);
 	 		postUser(user.data.id, user.data.username, token);
 		},
 		error: function(data){
@@ -40,13 +33,12 @@ function postUser(user_id, username, token){
 			if (response.data.user.errors) {
 				console.log(response.data.user.errors);
 			}else{
-				console.log(wordpress.instagram_token);
 				if(response.data.type == 'existing'){
 					console.log("Logged in existing user");
 		 			window.location = jQuery("#ilogin_redirect_url").val();
 				}else{
 					console.log("Asking for email address");
-			 		//console.log(response);
+			 		console.log(response);
 			 		jQuery('#ilogin_link').css('display', 'none');
 			 		jQuery('#ilogin_user_email').css('display', 'block');
 			 		jQuery('#ilogin_submit').css('display', 'block');
@@ -85,12 +77,14 @@ jQuery("#ilogin_submit").click(function(){
 					});
 					jQuery('#ilogin_error_email').html('<ul>' + str + '</ul>'); // append the list
 					console.log(response.data.user.errors);
+					console.log("success <if></if>");
 				}else{
 			 		console.log(response);
 			 		window.location = jQuery("#ilogin_redirect_url").val();
 				}
 			},
 			error: function(response){
+				console.log("on error");
 				console.log(response);
 			}
 		});

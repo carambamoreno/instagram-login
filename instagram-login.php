@@ -96,7 +96,6 @@ function instagram_login_button_shortcode( $atts, $content ){
 	wp_localize_script( 'instagram_login_js', 'wordpress',
         array( 
             'ajaxurl' => admin_url( 'admin-ajax.php' ),
-            'instagram_token' => $_SESSION['instagram_token'] ?? 'notoken',
         )
     );
 
@@ -116,10 +115,10 @@ function ilogin_action(){
 	if(is_user_logged_in())
 			wp_logout();
 
-	session_start();
 	//store instagram access token in session
+	session_start();
 	$_SESSION['instagram_token'] = $_POST['token'];
-
+	
 	//checks if username with instagram username exists in database
 	$user = get_user_by('login', $_POST['username']);
 
@@ -131,7 +130,7 @@ function ilogin_action(){
         $user = get_userdata($user_id);
 
         if( empty($user->user_email) ){
-
+        	$_SESSION['new_user_id'] = $user_id;
 			wp_send_json_success(array('user' => $user, 'type' => 'noemail'));
         	
         }
