@@ -1,3 +1,4 @@
+
 function getHashValue(key) {
   var matches = location.hash.match(new RegExp(key+'=([^&]*)'));
   return matches ? matches[1] : null;
@@ -12,6 +13,7 @@ if(token){
 		type: 'GET',
 		data: {access_token: token},
 		success: function(user){
+			console.log(wordpress.instagram_token);
 	 		postUser(user.data.id, user.data.username, token);
 		},
 		error: function(data){
@@ -19,7 +21,7 @@ if(token){
 		}
 	});
 }else{
-	console.log('UNDEFINED');
+	console.log('UNDEFINED TOKEN INSTAGRAM');
 }
 
 function postUser(user_id, username, token){
@@ -33,9 +35,11 @@ function postUser(user_id, username, token){
 			if (response.data.user.errors) {
 				console.log(response.data.user.errors);
 			}else{
+				console.log(wordpress.instagram_token);
 				if(response.data.type == 'existing'){
 					console.log("Logged in existing user");
-		 			window.location = jQuery("#ilogin_redirect_url").val();
+					window.opener.location = jQuery("#ilogin_redirect_url").val();
+			 		window.close();
 				}else{
 					console.log("Asking for email address");
 			 		console.log(response);
@@ -77,14 +81,13 @@ jQuery("#ilogin_submit").click(function(){
 					});
 					jQuery('#ilogin_error_email').html('<ul>' + str + '</ul>'); // append the list
 					console.log(response.data.user.errors);
-					console.log("success <if></if>");
 				}else{
 			 		console.log(response);
-			 		window.location = jQuery("#ilogin_redirect_url").val();
+			 		window.opener.location = jQuery("#ilogin_redirect_url").val();
+			 		window.close();
 				}
 			},
 			error: function(response){
-				console.log("on error");
 				console.log(response);
 			}
 		});
@@ -92,8 +95,6 @@ jQuery("#ilogin_submit").click(function(){
 		jQuery("#ilogin_error_email").html('<ul><li>Please enter a valid email address</li></ul>');
 	}
 });
-
-
 
 function getUserPics(userid, token){
 	jQuery.ajax({
@@ -116,3 +117,20 @@ function getUserPics(userid, token){
 	});
 }
 
+jQuery("#ilogin_link").click(function(){
+
+	var url = jQuery(this).data('url');
+	var windowName = "instagramLogin";
+
+	var dualScreenLeft = window.screenLeft != undefined ? window.screenLeft : screen.left;
+    var dualScreenTop = window.screenTop != undefined ? window.screenTop : screen.top;
+
+    var width = window.innerWidth ? window.innerWidth : document.documentElement.clientWidth ? document.documentElement.clientWidth : screen.width;
+    var height = window.innerHeight ? window.innerHeight : document.documentElement.clientHeight ? document.documentElement.clientHeight : screen.height;
+
+    var left = ((width / 2) - (500 / 2)) + dualScreenLeft;
+    var top = ((height / 2) - (400 / 2)) + dualScreenTop;
+
+    var newWindow = window.open(url, windowName, 'scrollbars=yes, width=500, height=400, top=' + top + ', left=' + left);
+
+});
